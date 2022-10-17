@@ -27,4 +27,4 @@ INSERT INTO wrong
     (perpetrator_id, victim_id, description)
 
 VALUES
-    (1, 3, "Smashed Dan's champagne/prosecco glass.");
+    (1, 3, 'Smashed Dan''s champagne/prosecco glass.');
