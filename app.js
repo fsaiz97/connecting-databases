@@ -19,8 +19,13 @@ function addRoutes(app) {
         const data = await db.query("SELECT * FROM wrong");
         res.status(200).send(data.rows);
     });
+
+    app.get("/wrongs/:id", async (req, res) => {
+        const id = parseInt(req.params.id);
+
+        const data = await db.query("SELECT * FROM wrong WHERE wrong_id = $1", [id]);
         res.status(200).send(data.rows[0]);
-    });
+    })
 
     app.get("/people", async (req, res) => {
         const data = await db.query("SELECT * FROM person");
