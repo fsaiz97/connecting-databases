@@ -61,6 +61,18 @@ function addRoutes(app) {
 
         res.status(200).send(data.rows[0]);
     })
+
+    app.post("/people", async (req, res) => {
+        const { person_name } = req.body;
+
+        try {
+            const data = await db.query("INSERT INTO person(person_name)\nVALUES ($1)", [person_name]);
+    
+            res.status(200).send("Person added\n" + data.rows)
+        } catch (err) {
+            res.status(500).send({error: err.message});
+        }
+    })
 }
 
 setupMiddleware(app);
