@@ -10,5 +10,5 @@ const db = require("./db")
 
 // Run the query - send the SQL code to the database
 db.query(sql)
-    .then(data => console.log("Setup complete", data))
+    .then(data => console.log("Setup complete"))
     .catch(error => console.log(error));
