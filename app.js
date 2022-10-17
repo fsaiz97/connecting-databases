@@ -45,6 +45,33 @@ function addRoutes(app) {
         }
     })
 
+    app.patch("/wrongs/:id", async (req, res) => {
+        const id = req.params.id;
+        const allowed_changes = ["forgiven", "forgotten", "revenged"];
+
+        const changes = req.body;
+        if (Object.keys(changes) === 0) {
+            res.status(400).send({err: "Patch request must have at least one change."})
+        }
+        let query = "UPDATE wrong SET";
+        let i = 1;
+        for (change in changes) {
+            if (allowed_changes.includes(change)) {
+                query += ` ${change}=$${i},`
+                i++;
+            }
+        }
+        query = query.slice(0, -1);
+        query += `WHERE wrong_id=$${i}`;
+
+        try {
+            const data = await db.query(query, [...Object.values(changes), id]);
+            res.status(200).send("Wrong updated\n" + data.rows)
+        } catch (err) {
+            res.status(400).send({error: err.message});
+        }
+    })
+
     app.delete("/wrongs/:id", async (req, res) => {
         const id = parseInt(req.params.id);
         try {
