@@ -83,6 +83,16 @@ function addRoutes(app) {
             res.status(500).send({error: err.message});
         }
     })
+
+    app.get("/stats", async (req, res) => {
+        try {
+            const data = await db.query("SELECT COUNT(*) as total_count, COUNT(*) FILTER (WHERE forgiven = TRUE) as num_forgiven, COUNT(*) FILTER (WHERE forgotten = TRUE) as num_forgotten, COUNT(*) FILTER (WHERE revenged= TRUE) as num_revenged\nFROM wrong");
+    
+            res.status(200).send(data.rows[0])
+        } catch (err) {
+            res.status(500).send({error: err.message});
+        }
+    })
 }
 
 setupMiddleware(app);
