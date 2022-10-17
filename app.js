@@ -22,7 +22,10 @@ function addRoutes(app) {
         const id = parse(req.params.id);
 
         // select person by id
-        const data = await db.query(`SELECT * FROM person WHERE person_id = ${id}`); // DON'T DO THIS, RISK OF SQL INJECTION
+        // const data = await db.query(`SELECT * FROM person WHERE person_id = ${id}`); // DON'T DO THIS, RISK OF SQL INJECTION where instead of an actual id, the attacker puts a valid SQL command.
+
+        // Avoid SQL injection with parametrisation
+        const data = await db.query("SELECT * FROM person WHERE person_id = $1", [id]) // user input is sent seperately to sql command, database then checks the parameters before putting them into the query.
     })
 }
 
