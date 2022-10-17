@@ -45,6 +45,16 @@ function addRoutes(app) {
         }
     })
 
+    app.delete("/wrongs/:id", async (req, res) => {
+        const id = parseInt(req.params.id);
+        try {
+            const data = await db.query("DELETE FROM wrong WHERE wrong_id = $1", [id]);
+            res.status(200).send("Wrong deleted\n" + data.rows)
+        } catch (err) {
+            res.status(404).send({error: err.message});
+        }
+    })
+
     app.get("/people", async (req, res) => {
         const data = await db.query("SELECT * FROM person");
         res.status(200).send(data.rows);
