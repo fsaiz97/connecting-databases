@@ -16,6 +16,13 @@ function addRoutes(app) {
     app.get("/wrongs", async (req, res) => {
         const data = await db.query("SELECT * FROM wrong");
         res.status(200).send(data.rows[0]);
+    });
+
+    app.get("/people/:id", async (req, res) => {
+        const id = parse(req.params.id);
+
+        // select person by id
+        const data = await db.query(`SELECT * FROM person WHERE person_id = ${id}`); // DON'T DO THIS, RISK OF SQL INJECTION
     })
 }
 
