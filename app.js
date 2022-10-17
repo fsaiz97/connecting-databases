@@ -27,6 +27,24 @@ function addRoutes(app) {
         res.status(200).send(data.rows[0]);
     })
 
+    app.post("/wrongs", async (req, res) => {
+        // const { perpetrator_id, victim_id, description, forgiven, forgotten, revenged } = req.body;
+        const perpetrator_id = parseInt(req.body.perpetrator_id);
+        const victim_id = parseInt(req.body.victim_id);
+        const description = req.body.description;
+        const forgiven = req.body.forgiven ? "TRUE" : "FALSE";
+        const forgotten = req.body.forgotten ? "TRUE" : "FALSE";
+        const revenged = req.body.revenged ? "TRUE" : "FALSE";
+
+        try {
+            const data = await db.query("INSERT INTO wrong(perpetrator_id, victim_id, description, forgiven, forgotten, revenged)\nVALUES ($1, $2, $3, $4, $5, $6)", [perpetrator_id, victim_id, description, forgiven, forgotten, revenged]);
+    
+            res.status(200).send("Wrong added\n" + data.rows)
+        } catch (err) {
+            res.status(500).send({error: err.message});
+        }
+    })
+
     app.get("/people", async (req, res) => {
         const data = await db.query("SELECT * FROM person");
         res.status(200).send(data.rows);
