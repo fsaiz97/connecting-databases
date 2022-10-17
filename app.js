@@ -15,7 +15,7 @@ function addRoutes(app) {
     
     app.get("/wrongs", async (req, res) => {
         const data = await db.query("SELECT * FROM wrong");
-        console.log(data);
+        res.status(200).send(data.rows[0]);
     })
 }
 
